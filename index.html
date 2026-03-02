@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Prodave">
+    <meta name="description" content="Prodave - Plateforme sécurisée d'inclusion entrepreneuriale au Sénégal">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <title>Prodave</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #0a0a0f;
+            --ink-2: #1e1b2e;
+            --ink-3: #2d2845;
+            --surface: #f7f6ff;
+            --surface-2: #edeaff;
+            --accent: #7c3aed;
+            --accent-2: #a855f7;
+            --accent-3: #c084fc;
+            --gold: #f59e0b;
+            --emerald: #10b981;
+            --rose: #f43f5e;
+            --sky: #0ea5e9;
+            --white: #ffffff;
+            --text-muted: #6b7280;
+            --border: rgba(124,58,237,0.15);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --radius-lg: 24px;
+            --shadow: 0 4px 24px rgba(124,58,237,0.12);
+            --shadow-lg: 0 16px 48px rgba(124,58,237,0.2);
+            --transition: all 0.28s cubic-bezier(0.4,0,0.2,1);
+            --safe-top: env(safe-area-inset-top, 0px);
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
+        }
+
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--surface);
+            color: var(--ink);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+            min-height: -webkit-fill-available;
+        }
+
+        h1,h2,h3,h4 { font-family: 'Syne', sans-serif; line-height: 1.15; }
+
+        /* ── LAYOUT ── */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .flex { display:flex; } .flex-col { flex-direction:column; }
+        .items-center { align-items:center; } .items-start { align-items:flex-start; }
+        .justify-between { justify-content:space-between; } .justify-center { justify-content:center; }
+        .gap-2 { gap:8px; } .gap-3 { gap:12px; } .gap-4 { gap:16px; } .gap-6 { gap:24px; } .gap-8 { gap:32px; }
+        .grid { display:grid; } .w-full { width:100%; } .flex-1 { flex:1; } .flex-wrap { flex-wrap:wrap; }
+        .mx-auto { margin:0 auto; } .text-center { text-align:center; }
+        .hidden { display:none !important; }
+        .relative { position:relative; } .absolute { position:absolute; }
+        .overflow-hidden { overflow:hidden; }
+        .cursor-pointer { cursor:pointer; }
+
+        /* ── TYPOGRAPHY ── */
+        .display { font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight:900; letter-spacing:-0.02em; }
+        .headline { font-size: clamp(1.75rem, 4vw, 2.75rem); font-weight:800; }
+        .title { font-size: clamp(1.25rem, 2.5vw, 1.75rem); font-weight:700; }
+        .label { font-size: 0.8125rem; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; }
+        .body { font-size:1rem; line-height:1.7; }
+        .small { font-size:0.875rem; }
+        .tiny { font-size:0.75rem; }
+        .muted { color: var(--text-muted); }
+        .gradient-text { background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 60%, #e879f9 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+
+        /* ── NAV ── */
+        .navbar {
+            position: fixed; top:0; left:0; right:0; z-index:100;
+            background: rgba(10,10,15,0.85);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid rgba(124,58,237,0.2);
+            padding: calc(12px + var(--safe-top)) 0 12px;
+        }
+        .navbar-inner { display:flex; align-items:center; justify-content:space-between; }
+        .logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+        .logo-mark {
+            width:38px; height:38px; border-radius:10px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            display:flex; align-items:center; justify-content:center;
+        }
+        .logo-mark svg { width:20px; height:20px; color:#fff; }
+        .logo-name { font-family:'Syne',sans-serif; font-weight:900; font-size:1.375rem; color:#fff; letter-spacing:-0.02em; }
+        .nav-actions { display:flex; align-items:center; gap:10px; }
+
+        /* ── BUTTONS ── */
+        .btn {
+            display:inline-flex; align-items:center; justify-content:center; gap:8px;
+            padding:10px 20px; border-radius:var(--radius-sm); font-family:'DM Sans',sans-serif;
+            font-weight:600; font-size:0.9375rem; cursor:pointer; border:none; text-decoration:none;
+            transition:var(--transition); white-space:nowrap; position:relative; overflow:hidden;
+        }
+        .btn svg { width:18px; height:18px; flex-shrink:0; }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            color:#fff; box-shadow: 0 4px 16px rgba(124,58,237,0.35);
+        }
+        .btn-primary:hover { transform:translateY(-2px); box-shadow: 0 8px 28px rgba(124,58,237,0.5); }
+        .btn-primary:active { transform:translateY(0); }
+        .btn-ghost { background:rgba(255,255,255,0.08); color:#fff; border:1px solid rgba(255,255,255,0.12); }
+        .btn-ghost:hover { background:rgba(255,255,255,0.14); }
+        .btn-outline { background:transparent; color:var(--accent); border:2px solid var(--accent); }
+        .btn-outline:hover { background:var(--accent); color:#fff; }
+        .btn-danger { background: linear-gradient(135deg, #ef4444, #f43f5e); color:#fff; }
+        .btn-danger:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(244,63,94,0.4); }
+        .btn-success { background: linear-gradient(135deg, var(--emerald), #34d399); color:#fff; }
+        .btn-success:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(16,185,129,0.4); }
+        .btn-dark { background:var(--ink); color:#fff; }
+        .btn-dark:hover { background:var(--ink-2); transform:translateY(-1px); }
+        .btn-lg { padding:14px 28px; font-size:1.0625rem; border-radius:var(--radius); }
+        .btn-sm { padding:7px 14px; font-size:0.8125rem; }
+        .btn-icon { width:40px; height:40px; padding:0; border-radius:10px; }
+
+        /* ── CARDS ── */
+        .card {
+            background:#fff; border-radius:var(--radius-lg); padding:28px;
+            border:1px solid var(--border);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            transition:var(--transition);
+        }
+        .card:hover { box-shadow:var(--shadow); transform:translateY(-3px); }
+        .card-dark { background:var(--ink); color:#fff; border-color:rgba(255,255,255,0.06); }
+        .card-accent { background: linear-gradient(135deg, #4c1d95 0%, #6d28d9 100%); color:#fff; }
+
+        /* ── FORMS ── */
+        .form-group { display:flex; flex-direction:column; gap:6px; }
+        .form-label { font-size:0.875rem; font-weight:600; color:var(--ink-2); }
+        .form-input, .form-select, .form-textarea {
+            width:100%; padding:11px 16px; border-radius:var(--radius-sm);
+            border:2px solid #e5e7eb; background:#fff; font-family:'DM Sans',sans-serif;
+            font-size:0.9375rem; color:var(--ink); transition:var(--transition);
+        }
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline:none; border-color:var(--accent);
+            box-shadow:0 0 0 3px rgba(124,58,237,0.1);
+        }
+        .form-textarea { resize:vertical; min-height:110px; }
+        .form-select { appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center; padding-right:40px; }
+
+        /* ── BADGES ── */
+        .badge {
+            display:inline-flex; align-items:center; gap:5px;
+            padding:4px 12px; border-radius:100px; font-size:0.8rem; font-weight:600;
+        }
+        .badge-purple { background:rgba(124,58,237,0.1); color:var(--accent); border:1px solid rgba(124,58,237,0.2); }
+        .badge-green { background:rgba(16,185,129,0.1); color:var(--emerald); border:1px solid rgba(16,185,129,0.2); }
+        .badge-yellow { background:rgba(245,158,11,0.1); color:var(--gold); border:1px solid rgba(245,158,11,0.2); }
+        .badge-red { background:rgba(244,63,94,0.1); color:var(--rose); border:1px solid rgba(244,63,94,0.2); }
+        .badge-blue { background:rgba(14,165,233,0.1); color:var(--sky); border:1px solid rgba(14,165,233,0.2); }
+
+        /* ── MODAL ── */
+        .modal-backdrop {
+            position:fixed; inset:0; background:rgba(10,10,15,0.75);
+            backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+            display:flex; align-items:center; justify-content:center;
+            z-index:200; padding:20px; animation:fadeIn .2s ease;
+        }
+        .modal {
+            background:#fff; border-radius:var(--radius-lg); padding:32px;
+            max-width:520px; width:100%; max-height:90vh; overflow-y:auto;
+            animation:slideUp .3s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        .modal-lg { max-width:700px; }
+
+        /* ── PROGRESS ── */
+        .progress { width:100%; height:8px; background:#e5e7eb; border-radius:100px; overflow:hidden; }
+        .progress-bar { height:100%; background:linear-gradient(90deg, var(--accent), var(--accent-2)); border-radius:100px; transition:width .5s ease; }
+
+        /* ── FILE UPLOAD ── */
+        .file-zone {
+            border:2px dashed rgba(124,58,237,0.3); border-radius:var(--radius);
+            padding:28px; text-align:center; cursor:pointer;
+            background: linear-gradient(135deg, rgba(124,58,237,0.03), rgba(168,85,247,0.03));
+            transition:var(--transition); position:relative;
+        }
+        .file-zone:hover { border-color:var(--accent); background:rgba(124,58,237,0.06); }
+        .file-zone input[type=file] { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; }
+
+        /* ── HERO ── */
+        .hero {
+            min-height: 100vh;
+            background: var(--ink);
+            display:flex; align-items:center;
+            position:relative; overflow:hidden;
+        }
+        .hero-bg {
+            position:absolute; inset:0; pointer-events:none;
+        }
+        .hero-blob {
+            position:absolute; border-radius:50%; filter:blur(80px); opacity:0.35;
+        }
+        .hero-blob-1 { width:600px; height:600px; background:radial-gradient(circle, #7c3aed 0%, transparent 70%); top:-100px; right:-100px; }
+        .hero-blob-2 { width:400px; height:400px; background:radial-gradient(circle, #a855f7 0%, transparent 70%); bottom:0; left:-50px; }
+        .hero-blob-3 { width:300px; height:300px; background:radial-gradient(circle, #0ea5e9 0%, transparent 70%); top:40%; left:30%; }
+        .hero-grid {
+            position:absolute; inset:0;
+            background-image: linear-gradient(rgba(124,58,237,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(124,58,237,0.06) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+        .hero-content { position:relative; z-index:1; color:#fff; }
+        .hero-eyebrow { display:inline-flex; align-items:center; gap:8px; padding:6px 14px; background:rgba(124,58,237,0.2); border:1px solid rgba(124,58,237,0.3); border-radius:100px; margin-bottom:24px; }
+        .hero-eyebrow span { font-size:0.8125rem; font-weight:600; color:var(--accent-3); }
+        .hero-dot { width:6px; height:6px; border-radius:50%; background:var(--accent-2); animation:pulse 2s infinite; }
+        .hero-cta { display:flex; flex-wrap:wrap; gap:12px; margin-top:40px; }
+        .hero-stats { display:flex; flex-wrap:wrap; gap:32px; margin-top:60px; padding-top:40px; border-top:1px solid rgba(255,255,255,0.08); }
+        .hero-stat-value { font-family:'Syne',sans-serif; font-size:2rem; font-weight:900; color:#fff; }
+        .hero-stat-label { font-size:0.875rem; color:rgba(255,255,255,0.5); margin-top:2px; }
+
+        /* ── SECTION ── */
+        .section { padding:80px 0; }
+        .section-dark { background:var(--ink); color:#fff; }
+        .section-accent { background:linear-gradient(135deg, #1e1b2e 0%, #2d2845 100%); color:#fff; }
+        .section-title { margin-bottom:48px; }
+
+        /* ── FEATURE CARDS ── */
+        .feature-card { padding:28px; border-radius:var(--radius-lg); border:1px solid; transition:var(--transition); }
+        .feature-card:hover { transform:translateY(-6px); }
+        .feature-icon { width:52px; height:52px; border-radius:14px; display:flex; align-items:center; justify-content:center; margin-bottom:20px; }
+        .feature-icon svg { width:24px; height:24px; }
+
+        /* ── DASHBOARD ── */
+        .dashboard { padding-top: calc(72px + var(--safe-top)); min-height:100vh; background:var(--surface); }
+        .dash-header { background:#fff; border-bottom:1px solid var(--border); padding:24px 0; }
+        .dash-body { padding:32px 0; }
+        .stat-tile { background:#fff; border-radius:var(--radius); padding:20px; border:1px solid var(--border); display:flex; align-items:center; gap:16px; transition:var(--transition); }
+        .stat-tile:hover { box-shadow:var(--shadow); transform:translateY(-2px); }
+        .stat-icon { width:48px; height:48px; border-radius:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+        .stat-icon svg { width:22px; height:22px; }
+        .stat-value { font-family:'Syne',sans-serif; font-size:1.75rem; font-weight:900; line-height:1; }
+        .stat-label { font-size:0.8125rem; color:var(--text-muted); margin-top:2px; }
+
+        /* ── PROJECT CARD ── */
+        .project-card { background:#fff; border-radius:var(--radius-lg); border:1px solid var(--border); overflow:hidden; transition:var(--transition); cursor:pointer; }
+        .project-card:hover { box-shadow:var(--shadow-lg); transform:translateY(-4px); }
+        .project-img { height:200px; overflow:hidden; background:linear-gradient(135deg, #1e1b2e, #4c1d95); }
+        .project-img img { width:100%; height:100%; object-fit:cover; }
+        .project-img-placeholder { width:100%; height:100%; display:flex; align-items:center; justify-content:center; }
+        .project-img-placeholder svg { width:48px; height:48px; color:rgba(255,255,255,0.3); }
+        .project-body { padding:20px; }
+        .project-meta { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px; }
+        .project-title { font-family:'Syne',sans-serif; font-weight:800; font-size:1.125rem; margin-bottom:8px; color:var(--ink); }
+        .project-desc { font-size:0.9rem; color:var(--text-muted); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+        .project-footer { padding:16px 20px; border-top:1px solid #f3f4f6; display:flex; align-items:center; justify-content:space-between; }
+
+        /* ── INVESTOR TABLE ── */
+        .table-container { background:#fff; border-radius:var(--radius-lg); border:1px solid var(--border); overflow:hidden; }
+        .table-header { padding:20px 24px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+        .table-search { display:flex; align-items:center; gap:8px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); padding:8px 14px; }
+        .table-search input { border:none; background:transparent; font-family:'DM Sans',sans-serif; font-size:0.9375rem; outline:none; width:220px; }
+        .table { width:100%; border-collapse:collapse; }
+        .table th { padding:12px 20px; text-align:left; font-size:0.75rem; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-muted); background:var(--surface); border-bottom:1px solid var(--border); }
+        .table td { padding:14px 20px; border-bottom:1px solid #f9fafb; font-size:0.9rem; vertical-align:middle; }
+        .table tr:last-child td { border-bottom:none; }
+        .table tr:hover td { background:var(--surface); }
+        .avatar { width:36px; height:36px; border-radius:10px; background:linear-gradient(135deg, var(--accent), var(--accent-2)); display:flex; align-items:center; justify-content:center; font-family:'Syne',sans-serif; font-weight:800; font-size:0.875rem; color:#fff; flex-shrink:0; }
+
+        /* ── ADMIN NAV ── */
+        .admin-nav { background:var(--ink); padding-top:var(--safe-top); }
+        .admin-nav-inner { display:flex; align-items:center; justify-content:space-between; padding:14px 0; }
+        .admin-tabs { display:flex; gap:4px; background:rgba(255,255,255,0.05); border-radius:var(--radius-sm); padding:4px; }
+        .admin-tab { padding:8px 16px; border-radius:6px; font-size:0.875rem; font-weight:600; cursor:pointer; color:rgba(255,255,255,0.5); border:none; background:transparent; transition:var(--transition); }
+        .admin-tab.active { background:var(--accent); color:#fff; }
+        .admin-tab:hover:not(.active) { color:#fff; }
+
+        /* ── SIGNUP STEPS ── */
+        .step-indicator { display:flex; align-items:center; gap:8px; margin-bottom:32px; }
+        .step-dot { width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.875rem; transition:var(--transition); flex-shrink:0; }
+        .step-dot.active { background:var(--accent); color:#fff; }
+        .step-dot.done { background:var(--emerald); color:#fff; }
+        .step-dot.inactive { background:#e5e7eb; color:var(--text-muted); }
+        .step-line { flex:1; height:2px; border-radius:1px; background:#e5e7eb; }
+        .step-line.done { background:var(--emerald); }
+
+        /* ── TOAST ── */
+        .toast-container { position:fixed; bottom:calc(24px + var(--safe-bottom)); right:24px; z-index:999; display:flex; flex-direction:column; gap:8px; }
+        .toast { padding:12px 20px; border-radius:var(--radius-sm); background:var(--ink); color:#fff; font-size:0.9rem; font-weight:500; box-shadow:var(--shadow-lg); animation:slideRight .3s ease; max-width:320px; display:flex; align-items:center; gap:10px; }
+        .toast.success { background:var(--emerald); }
+        .toast.error { background:var(--rose); }
+        .toast.warning { background:var(--gold); color:var(--ink); }
+        .toast svg { width:18px; height:18px; flex-shrink:0; }
+
+        /* ── ANIMATIONS ── */
+        @keyframes fadeIn { from { opacity:0 } to { opacity:1 } }
+        @keyframes slideUp { from { opacity:0; transform:translateY(30px) scale(0.96) } to { opacity:1; transform:translateY(0) scale(1) } }
+        @keyframes slideRight { from { opacity:0; transform:translateX(20px) } to { opacity:1; transform:translateX(0) } }
+        @keyframes pulse { 0%,100% { opacity:1 } 50% { opacity:0.4 } }
+        @keyframes float { 0%,100% { transform:translateY(0) } 50% { transform:translateY(-8px) } }
+        .animate-in { animation:slideUp .4s cubic-bezier(0.34,1.56,0.64,1); }
+        .animate-fade { animation:fadeIn .4s ease; }
+
+        /* ── RESPONSIVE ── */
+        .grid-2 { grid-template-columns: repeat(2,1fr); }
+        .grid-3 { grid-template-columns: repeat(3,1fr); }
+        .grid-4 { grid-template-columns: repeat(4,1fr); }
+        .grid-auto { grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); }
+        .grid-projects { grid-template-columns: repeat(auto-fill, minmax(320px,1fr)); }
+
+        @media (max-width: 768px) {
+            .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+            .grid-projects { grid-template-columns: 1fr; }
+            .section { padding:60px 0; }
+            .modal { padding:24px; }
+            .table-search input { width:150px; }
+            .admin-tabs { overflow-x:auto; }
+            .hero-stats { gap:20px; }
+            .hide-mobile { display:none !important; }
+        }
+
+        @media (max-width: 480px) {
+            .table { font-size:0.8rem; }
+            .table th, .table td { padding:10px 12px; }
+        }
+
+        /* ── NDA BOX ── */
+        .nda-box { background:linear-gradient(135deg, rgba(124,58,237,0.05), rgba(168,85,247,0.05)); border:1px solid rgba(124,58,237,0.15); border-radius:var(--radius); padding:20px; }
+        .nda-scroll { max-height:160px; overflow-y:auto; background:#fff; border-radius:10px; padding:16px; font-size:0.875rem; line-height:1.7; color:var(--ink-2); }
+        .nda-scroll::-webkit-scrollbar { width:4px; }
+        .nda-scroll::-webkit-scrollbar-thumb { background:var(--accent-3); border-radius:2px; }
+
+        /* ── MISC ── */
+        .divider { height:1px; background:var(--border); margin:24px 0; }
+        .chip { display:inline-flex; align-items:center; gap:6px; padding:6px 14px; border-radius:100px; background:var(--surface-2); font-size:0.85rem; font-weight:600; color:var(--accent); }
+        .empty-state { padding:60px 20px; text-align:center; }
+        .empty-icon { width:72px; height:72px; border-radius:20px; background:linear-gradient(135deg, rgba(124,58,237,0.1), rgba(168,85,247,0.1)); display:flex; align-items:center; justify-content:center; margin:0 auto 20px; }
+        .empty-icon svg { width:32px; height:32px; color:var(--accent); }
+        .info-box { border-radius:var(--radius); padding:16px 20px; display:flex; gap:12px; align-items:flex-start; }
+        .info-box.purple { background:rgba(124,58,237,0.06); border:1px solid rgba(124,58,237,0.15); }
+        .info-box.yellow { background:rgba(245,158,11,0.06); border:1px solid rgba(245,158,11,0.2); }
+        .info-box.green { background:rgba(16,185,129,0.06); border:1px solid rgba(16,185,129,0.2); }
+        .info-box.red { background:rgba(244,63,94,0.06); border:1px solid rgba(244,63,94,0.2); }
+        .info-box svg { width:20px; height:20px; flex-shrink:0; margin-top:1px; }
+        select option { color: var(--ink); }
+    </style>
+</head>
+<body>
+<div id="root"></div>
+<div class="toast-container" id="toasts"></div>
+
+<script>
+// ╔══════════════════════════════════════════╗
+// ║            PRODAVE  — ÉTAT APP           ║
+// ╚══════════════════════════════════════════╝
+const S = {
+    view: 'landing',
+    user: null,
+    userType: null,
+    projects: [],
+    users: [],
+    currentProject: null,
+    adminTab: 'pending',
+    modal: null, // 'login'|'forgot'|'contact'|'invest'|'docView'
+    investData: { pct: 10, amount: 0 },
+    filterSearch: '',
+    admin: { username:'AdjiT', password:'Adji2005' }
+};
+
+// ╔══════════════════════════════════════════╗
+// ║              STORAGE / INIT              ║
+// ╚══════════════════════════════════════════╝
+function load() {
+    try {
+        const p = localStorage.getItem('pdv_projects');
+        const u = localStorage.getItem('pdv_users');
+        const me = localStorage.getItem('pdv_me');
+        if (p) S.projects = JSON.parse(p);
+        if (u) S.users = JSON.parse(u);
+        if (me) {
+            S.user = JSON.parse(me);
+            S.view = S.user.type === 'admin' ? 'admin' : S.user.type === 'porteur' ? 'porteur' : 'investor';
+        }
+    } catch(e) { console.warn(e); }
+}
+function save() {
+    localStorage.setItem('pdv_projects', JSON.stringify(S.projects));
+    localStorage.setItem('pdv_users', JSON.stringify(S.users));
+    if (S.user) localStorage.setItem('pdv_me', JSON.stringify(S.user));
+    else localStorage.removeItem('pdv_me');
+}
+function go(view) { S.view = view; render(); window.scrollTo({top:0,behavior:'smooth'}); }
+function openModal(m) { S.modal = m; render(); }
+function closeModal() { S.modal = null; render(); }
+
+// ╔══════════════════════════════════════════╗
+// ║               TOAST SYSTEM               ║
+// ╚══════════════════════════════════════════╝
+function toast(msg, type='', icon='') {
+    const c = document.getElementById('toasts');
+    const t = document.createElement('div');
+    t.className = `toast ${type}`;
+    t.innerHTML = `${icon||svgIcon(type==='success'?'check':type==='error'?'x':'info')} <span>${msg}</span>`;
+    c.appendChild(t);
+    setTimeout(()=>t.remove(), 3500);
+}
+
+// ╔══════════════════════════════════════════╗
+// ║                ICONS SVG                 ║
+// ╚══════════════════════════════════════════╝
+const ICONS = {
+    trending:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg>`,
+    users:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+    briefcase:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>`,
+    dollar:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>`,
+    arrow:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>`,
+    plus:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>`,
+    edit:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`,
+    trash:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>`,
+    x:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`,
+    mail:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>`,
+    send:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>`,
+    pin:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
+    shield:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
+    upload:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>`,
+    check:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>`,
+    lock:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`,
+    eye:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`,
+    logout:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>`,
+    percent:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>`,
+    warn:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`,
+    file:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>`,
+    settings:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>`,
+    info:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>`,
+    xc:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`,
+    calendar:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`,
+    search:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>`,
+    db:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>`
+};
+function I(n,cls='') { return `<span class="${cls}" style="display:inline-flex;align-items:center;width:1em;height:1em;vertical-align:middle;">${ICONS[n]||''}</span>`; }
+function svgIcon(n,size=20) { return `<span style="display:inline-flex;align-items:center;width:${size}px;height:${size}px;flex-shrink:0;">${ICONS[n]||''}</span>`; }
+
+// ╔══════════════════════════════════════════╗
+// ║               FORMATTERS                 ║
+// ╚══════════════════════════════════════════╝
+function fcfa(n) { return new Intl.NumberFormat('fr-FR',{style:'currency',currency:'XOF',minimumFractionDigits:0}).format(n); }
+function fdate(iso) { try { return new Date(iso).toLocaleDateString('fr-FR'); } catch { return iso; } }
+function initials(name) { return (name||'?').split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase(); }
+
+// ╔══════════════════════════════════════════╗
+// ║                  AUTH                    ║
+// ╚══════════════════════════════════════════╝
+function handleLogin(e) {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const email = fd.get('email'), pass = fd.get('password');
+    if (email === S.admin.username && pass === S.admin.password) {
+        S.user = { type:'admin', name:'Administrateur', email:'admin@prodave.sn' };
+        save(); closeModal(); go('admin');
+        toast('Bienvenue Admin !','success');
+        return;
+    }
+    const u = S.users.find(x=>x.email===email && x.password===pass);
+    if (u) {
+        S.user = u; save(); closeModal();
+        if (u.type==='investisseur' && !u.documentsValidated) toast('Documents en attente de validation','warning');
+        go(u.type==='porteur'?'porteur':'investor');
+        toast(`Bienvenue ${u.name} !`,'success');
+    } else toast('Email ou mot de passe incorrect','error');
+}
+
+function handleForgot(e) {
+    e.preventDefault();
+    const email = new FormData(e.target).get('email');
+    const u = S.users.find(x=>x.email===email);
+    if (u) { toast(`Lien envoyé à ${email}`,'success'); closeModal(); openModal('login'); }
+    else toast('Aucun compte avec cet email','error');
+}
+
+function handleSignup(e) {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    if (S.users.some(u=>u.email===fd.get('email'))) { toast('Email déjà utilisé','error'); return; }
+    const u = {
+        id: Date.now(),
+        name: fd.get('name'), email: fd.get('email'),
+        password: fd.get('password'), city: fd.get('city'),
+        type: S.userType, createdAt: new Date().toISOString()
+    };
+    if (S.userType==='investisseur') {
+        if (!fd.get('nda')) { toast('Veuillez accepter le NDA','error'); return; }
+        const doc = fd.get('financialDocument');
+        if (!doc||doc.size===0) { toast('Document financier requis','error'); return; }
+        u.ndaAccepted=true; u.ndaDate=new Date().toISOString();
+        u.financialDocument=doc.name; u.documentsValidated=false; u.canInvest=false;
+    }
+    S.users.push(u); S.user=u; save();
+    toast('Compte créé avec succès !','success');
+    go(S.userType==='porteur'?'porteur':'investor');
+}
+
+function logout() { S.user=null; save(); go('landing'); }
+
+// ╔══════════════════════════════════════════╗
+// ║               PROJECTS                   ║
+// ╚══════════════════════════════════════════╝
+function handleCreateProject(e) {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const proj = {
+        id: S.currentProject?.id||Date.now(),
+        title:fd.get('title'), description:fd.get('description'),
+        objectives:fd.get('objectives'), category:fd.get('category'),
+        budget:parseFloat(fd.get('budget')), city:fd.get('city'),
+        status:'En recherche de financement',
+        date:new Date().toLocaleDateString('fr-FR'),
+        owner:S.user.name, ownerId:S.user.id,
+        ownerEmail:S.user.email, ownerCity:S.user.city,
+        image:S.currentProject?.image||null, investments:S.currentProject?.investments||[]
+    };
+    const imgFile = fd.get('image');
+    const saveProject = ()=>{
+        if (S.currentProject) {
+            const idx = S.projects.findIndex(p=>p.id===proj.id);
+            if(idx>-1) S.projects[idx]=proj; else S.projects.push(proj);
+        } else S.projects.push(proj);
+        save(); toast('Projet '+(S.currentProject?'modifié':'créé')+' !','success');
+        S.currentProject=null; go('porteur');
+    };
+    if (imgFile&&imgFile.size>0) {
+        const r=new FileReader();
+        r.onload=(ev)=>{ proj.image=ev.target.result; saveProject(); };
+        r.readAsDataURL(imgFile);
+    } else saveProject();
+}
+
+function deleteProject(id) {
+    if (!confirm('Supprimer ce projet ?')) return;
+    S.projects=S.projects.filter(p=>p.id!==id);
+    save(); toast('Projet supprimé','success'); render();
+}
+
+// ╔══════════════════════════════════════════╗
+// ║               INVESTMENT                 ║
+// ╚══════════════════════════════════════════╝
+function updateInvPct(e) {
+    const pct=parseFloat(e.target.value);
+    S.investData={pct,amount:S.currentProject.budget*pct/100};
+    const el=document.getElementById('inv-amount');
+    const pe=document.getElementById('inv-pct');
+    if(el) el.textContent=fcfa(S.investData.amount);
+    if(pe) pe.textContent=pct;
+}
+
+function handleInvest(e) {
+    e.preventDefault();
+    if (!S.user?.documentsValidated) { toast('Validation en attente','warning'); return; }
+    const fd=new FormData(e.target);
+    const pct=parseFloat(fd.get('percentage'));
+    if (!fd.get('payConfirm')) { toast('Confirmez le paiement','error'); return; }
+    const inv={
+        id:Date.now(), investorId:S.user.id, investorName:S.user.name,
+        investorEmail:S.user.email, projectId:S.currentProject.id,
+        percentage:pct, amount:S.investData.amount, date:new Date().toISOString()
+    };
+    const idx=S.projects.findIndex(p=>p.id===S.currentProject.id);
+    if(idx>-1){
+        if(!S.projects[idx].investments) S.projects[idx].investments=[];
+        S.projects[idx].investments.push(inv);
+        const total=S.projects[idx].investments.reduce((s,i)=>s+i.percentage,0);
+        S.projects[idx].status=total>=100?'Financé':`${Math.round(total)}% financé`;
+    }
+    save(); closeModal();
+    toast(`Investissement de ${pct}% confirmé !`,'success');
+    go('investor');
+}
+
+// ╔══════════════════════════════════════════╗
+// ║                 ADMIN                    ║
+// ╚══════════════════════════════════════════╝
+function approveInvestor(id) {
+    const u=S.users.find(x=>x.id===id);
+    if(u){ u.documentsValidated=true; u.canInvest=true; u.validatedDate=new Date().toISOString(); save(); toast(`${u.name} approuvé !`,'success'); render(); }
+}
+function rejectInvestor(id) {
+    const u=S.users.find(x=>x.id===id);
+    if(!u) return;
+    const reason=prompt('Raison du rejet :');
+    if(reason){ u.documentsValidated=false; u.canInvest=false; u.rejectionReason=reason; u.rejectionDate=new Date().toISOString(); save(); toast(`${u.name} rejeté`,'error'); render(); }
+}
+
+// ╔══════════════════════════════════════════╗
+// ║               RENDER VIEWS               ║
+// ╚══════════════════════════════════════════╝
+function renderNavbar(dark=false) {
+    return `<nav class="navbar">
+        <div class="container"><div class="navbar-inner">
+            <a class="logo" onclick="go('landing')" style="cursor:pointer">
+                <div class="logo-mark">${ICONS.trending}</div>
+                <span class="logo-name">Prodave</span>
+            </a>
+            <div class="nav-actions">
+                ${S.user ? `
+                    <div class="chip hide-mobile">${S.user.name}</div>
+                    <button class="btn btn-ghost btn-sm" onclick="logout()">${svgIcon('logout')} Déconnexion</button>
+                ` : `
+                    <button class="btn btn-ghost btn-sm" onclick="openModal('login')">Connexion</button>
+                    <button class="btn btn-primary btn-sm" onclick="go('choose')">Créer un compte</button>
+                `}
+            </div>
+        </div></div>
+    </nav>`;
+}
+
+// ─── LANDING ───────────────────────────────
+function viewLanding() {
+    return `
+    ${renderNavbar()}
+    <main>
+        <!-- HERO -->
+        <section class="hero">
+            <div class="hero-bg">
+                <div class="hero-grid"></div>
+                <div class="hero-blob hero-blob-1"></div>
+                <div class="hero-blob hero-blob-2"></div>
+                <div class="hero-blob hero-blob-3"></div>
+            </div>
+            <div class="container" style="padding-top:100px;padding-bottom:80px;">
+                <div class="hero-content animate-in" style="max-width:800px;">
+                    <div class="hero-eyebrow">
+                        <div class="hero-dot"></div>
+                        <span>Plateforme n°1 au Sénégal</span>
+                    </div>
+                    <h1 class="display" style="color:#fff;margin-bottom:24px;">
+                        Transformez vos idées<br/><span class="gradient-text">en projets financés</span>
+                    </h1>
+                    <p class="body" style="color:rgba(255,255,255,0.65);max-width:560px;">
+                        Connectez porteurs de projets et investisseurs vérifiés avec confidentialité totale et contrats sécurisés.
+                    </p>
+                    <div class="hero-cta">
+                        <button class="btn btn-primary btn-lg" onclick="go('choose')">${svgIcon('arrow')} Commencer gratuitement</button>
+                        <button class="btn btn-ghost btn-lg" onclick="openModal('login')">${svgIcon('lock')} J'ai un compte</button>
+                    </div>
+                    <div class="hero-stats">
+                        <div><div class="hero-stat-value">${S.projects.length}</div><div class="hero-stat-label">Projets publiés</div></div>
+                        <div><div class="hero-stat-value">${S.users.filter(u=>u.type==='investisseur'&&u.documentsValidated).length}</div><div class="hero-stat-label">Investisseurs validés</div></div>
+                        <div><div class="hero-stat-value">100%</div><div class="hero-stat-label">Confidentialité NDA</div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FEATURES -->
+        <section class="section" style="background:#fff;">
+            <div class="container">
+                <div class="section-title text-center">
+                    <div class="chip" style="margin:0 auto 16px;">Pourquoi Prodave ?</div>
+                    <h2 class="headline">Une plateforme conçue<br/>pour la confiance</h2>
+                </div>
+                <div class="grid grid-auto" style="gap:20px;">
+                    <div class="feature-card" style="background:linear-gradient(135deg,#f5f3ff,#faf5ff);border-color:rgba(124,58,237,0.15);">
+                        <div class="feature-icon" style="background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;">${ICONS.shield}</div>
+                        <h3 class="title" style="margin-bottom:10px;">Confidentialité NDA</h3>
+                        <p class="small muted">Règles strictes de non-divulgation. Vos projets sont protégés par des accords légaux.</p>
+                    </div>
+                    <div class="feature-card" style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-color:rgba(16,185,129,0.15);">
+                        <div class="feature-icon" style="background:linear-gradient(135deg,var(--emerald),#34d399);color:#fff;">${ICONS.check}</div>
+                        <h3 class="title" style="margin-bottom:10px;">Investisseurs vérifiés</h3>
+                        <p class="small muted">Chaque investisseur est validé avec preuves de capacité financière avant d'accéder aux projets.</p>
+                    </div>
+                    <div class="feature-card" style="background:linear-gradient(135deg,#fff7ed,#fed7aa);border-color:rgba(245,158,11,0.2);">
+                        <div class="feature-icon" style="background:linear-gradient(135deg,var(--gold),#fbbf24);color:#fff;">${ICONS.lock}</div>
+                        <h3 class="title" style="margin-bottom:10px;">Contrats sécurisés</h3>
+                        <p class="small muted">Investissements avec contrats automatiques et paiement obligatoire pour chaque tranche.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="section section-dark">
+            <div class="container text-center" style="max-width:640px;">
+                <div class="chip" style="margin:0 auto 20px;background:rgba(124,58,237,0.2);color:var(--accent-3);">Rejoignez-nous</div>
+                <h2 class="headline" style="color:#fff;margin-bottom:16px;">Prêt à démarrer ?</h2>
+                <p class="body" style="color:rgba(255,255,255,0.55);margin-bottom:32px;">Choisissez votre profil et rejoignez la communauté entrepreneuriale sénégalaise.</p>
+                <button class="btn btn-primary btn-lg" onclick="go('choose')">${svgIcon('arrow')} Créer mon compte</button>
+            </div>
+        </section>
+
+        <footer style="background:var(--ink);border-top:1px solid rgba(255,255,255,0.05);padding:32px 0;">
+            <div class="container flex items-center justify-between flex-wrap gap-4">
+                <div class="logo"><div class="logo-mark">${ICONS.trending}</div><span class="logo-name">Prodave</span></div>
+                <p class="tiny" style="color:rgba(255,255,255,0.3);">© 2025 Prodave · Dakar, Sénégal</p>
+            </div>
+        </footer>
+    </main>
+    ${S.modal==='login'?modalLogin():S.modal==='forgot'?modalForgot():''}`;
+}
+
+// ─── CHOOSE PROFILE ─────────────────────────
+function viewChoose() {
+    return `${renderNavbar()}
+    <div style="min-height:100vh;background:var(--ink);display:flex;align-items:center;justify-content:center;padding:100px 20px 40px;">
+        <div style="max-width:900px;width:100%;" class="animate-in">
+            <div class="text-center" style="margin-bottom:48px;">
+                <div class="chip" style="margin:0 auto 16px;background:rgba(124,58,237,0.2);color:var(--accent-3);">Inscription</div>
+                <h1 class="headline" style="color:#fff;">Choisissez votre profil</h1>
+            </div>
+            <div class="grid grid-2" style="gap:20px;">
+                <div class="card card-dark" onclick="S.userType='porteur';go('signup')" style="cursor:pointer;border:2px solid rgba(124,58,237,0.2);padding:36px;">
+                    <div class="feature-icon" style="background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;width:60px;height:60px;margin-bottom:24px;">${ICONS.briefcase}</div>
+                    <h2 class="title" style="color:#fff;margin-bottom:12px;">Porteur de projet</h2>
+                    <p class="small" style="color:rgba(255,255,255,0.5);margin-bottom:24px;">Vous avez une idée et cherchez des investisseurs pour la concrétiser.</p>
+                    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:28px;">
+                        ${['Créez et gérez vos projets','Confidentialité garantie','Connectez avec des investisseurs'].map(t=>`
+                        <div style="display:flex;align-items:center;gap:8px;"><span style="color:var(--emerald);width:18px;height:18px;">${ICONS.check}</span><span class="small" style="color:rgba(255,255,255,0.7);">${t}</span></div>`).join('')}
+                    </div>
+                    <div style="color:var(--accent-3);display:flex;align-items:center;gap:6px;font-weight:600;">Continuer ${svgIcon('arrow',16)}</div>
+                </div>
+                <div class="card card-dark" onclick="S.userType='investisseur';go('signup')" style="cursor:pointer;border:2px solid rgba(14,165,233,0.2);padding:36px;">
+                    <div class="feature-icon" style="background:linear-gradient(135deg,var(--sky),#38bdf8);color:#fff;width:60px;height:60px;margin-bottom:24px;">${ICONS.dollar}</div>
+                    <h2 class="title" style="color:#fff;margin-bottom:12px;">Investisseur</h2>
+                    <p class="small" style="color:rgba(255,255,255,0.5);margin-bottom:24px;">Vous avez des capitaux à investir dans des projets prometteurs.</p>
+                    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:28px;">
+                        ${['Accès à tous les projets','Investissez en toute sécurité','Définissez vos tranches'].map(t=>`
+                        <div style="display:flex;align-items:center;gap:8px;"><span style="color:var(--emerald);width:18px;height:18px;">${ICONS.check}</span><span class="small" style="color:rgba(255,255,255,0.7);">${t}</span></div>`).join('')}
+                    </div>
+                    <div style="color:#38bdf8;display:flex;align-items:center;gap:6px;font-weight:600;">Continuer ${svgIcon('arrow',16)}</div>
+                </div>
+            </div>
+            <div class="text-center" style="margin-top:24px;">
+                <button class="btn btn-ghost btn-sm" onclick="go('landing')" style="color:rgba(255,255,255,0.5);">${svgIcon('arrow',16)} Retour</button>
+            </div>
+        </div>
+    </div>`;
+}
+
+// ─── SIGNUP ─────────────────────────────────
+function viewSignup() {
+    const isInv = S.userType==='investisseur';
+    return `${renderNavbar()}
+    <div style="min-height:100vh;background:var(--surface);padding:100px 20px 60px;">
+        <div style="max-width:600px;margin:0 auto;" class="animate-in">
+            <div style="margin-bottom:32px;">
+                <button class="btn btn-ghost btn-sm" onclick="go('choose')" style="margin-bottom:16px;">${svgIcon('arrow',16)} Retour</button>
+                <h1 class="headline">Inscription <span class="gradient-text">${isInv?'Investisseur':'Porteur de projet'}</span></h1>
+            </div>
+            <div class="card" style="padding:32px;">
+                <form onsubmit="handleSignup(event)" style="display:flex;flex-direction:column;gap:20px;">
+                    <div class="grid grid-2" style="gap:16px;">
+                        <div class="form-group"><label class="form-label">Nom complet *</label><input name="name" required class="form-input" placeholder="Votre nom"></div>
+                        <div class="form-group"><label class="form-label">Ville *</label><input name="city" required class="form-input" placeholder="Dakar…"></div>
+                    </div>
+                    <div class="form-group"><label class="form-label">Email *</label><input type="email" name="email" required class="form-input" placeholder="vous@email.com"></div>
+                    <div class="form-group"><label class="form-label">Mot de passe *</label><input type="password" name="password" required minlength="6" class="form-input" placeholder="Min. 6 caractères"></div>
+                    ${isInv ? `
+                    <div class="divider"></div>
+                    <div class="info-box yellow">${svgIcon('warn')}<div><strong>Documents financiers requis</strong><br><span class="small">Bulletin de salaire (personne physique) ou Chiffre d'affaires (entreprise)</span></div></div>
+                    <div class="form-group">
+                        <label class="form-label">Document financier * <span class="small muted">(PDF, JPG, PNG)</span></label>
+                        <div class="file-zone">${svgIcon('upload',36)}<p style="margin:12px 0 4px;font-weight:600;">Cliquez pour charger</p><p class="tiny muted">PDF, JPG ou PNG — Max 10 Mo</p><input type="file" name="financialDocument" required accept=".pdf,.jpg,.jpeg,.png"></div>
+                    </div>
+                    <div class="nda-box">
+                        <h4 style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">${svgIcon('shield',18)} Accord de confidentialité (NDA)</h4>
+                        <div class="nda-scroll">
+                            <p><strong>En tant qu'investisseur, vous vous engagez à :</strong></p>
+                            <ul style="padding-left:20px;margin-top:8px;line-height:2;">
+                                <li>Ne <strong>jamais divulguer</strong> les informations des projets consultés</li>
+                                <li>Ne pas <strong>copier, partager ou revendre</strong> les idées, business plans, données</li>
+                                <li>Utiliser les informations <strong>uniquement</strong> pour l'analyse d'investissement</li>
+                                <li>Ne pas <strong>exploiter</strong> une idée sans contrat d'investissement valide</li>
+                            </ul>
+                            <p style="margin-top:12px;"><strong>Sanctions :</strong> suspension de compte, poursuites judiciaires, interdiction définitive.</p>
+                        </div>
+                        <label style="display:flex;align-items:center;gap:10px;margin-top:14px;cursor:pointer;">
+                            <input type="checkbox" name="nda" required style="width:18px;height:18px;cursor:pointer;accent-color:var(--accent);">
+                            <span class="small" style="font-weight:600;">J'accepte les règles de confidentialité (NDA) *</span>
+                        </label>
+                    </div>
+                    ` : ''}
+                    <button type="submit" class="btn btn-primary btn-lg">${svgIcon('check')} Créer mon compte</button>
+                    <p class="small text-center muted">Déjà un compte ? <button type="button" onclick="openModal('login')" style="color:var(--accent);font-weight:600;background:none;border:none;cursor:pointer;">Se connecter</button></p>
+                </form>
+            </div>
+        </div>
+    </div>
+    ${S.modal==='login'?modalLogin():''}`;
+}
+
+// ─── PORTEUR DASHBOARD ───────────────────────
+function viewPorteur() {
+    const myProjects = S.projects.filter(p=>p.ownerId===S.user?.id);
+    const funded = myProjects.filter(p=>p.status==='Financé').length;
+    return `${renderNavbar()}
+    <div class="dashboard">
+        <div class="dash-header">
+            <div class="container flex items-center justify-between flex-wrap gap-3">
+                <div>
+                    <h1 class="headline" style="font-size:1.75rem;">Mes projets</h1>
+                    <p class="small muted">Bonjour, ${S.user?.name}</p>
+                </div>
+                <button class="btn btn-primary" onclick="S.currentProject=null;go('create')">${svgIcon('plus')} Nouveau projet</button>
+            </div>
+        </div>
+        <div class="dash-body">
+            <div class="container">
+                <div class="grid grid-3" style="gap:16px;margin-bottom:32px;">
+                    <div class="stat-tile"><div class="stat-icon" style="background:rgba(124,58,237,0.1);color:var(--accent);">${ICONS.briefcase}</div><div><div class="stat-value">${myProjects.length}</div><div class="stat-label">Total projets</div></div></div>
+                    <div class="stat-tile"><div class="stat-icon" style="background:rgba(16,185,129,0.1);color:var(--emerald);">${ICONS.check}</div><div><div class="stat-value">${funded}</div><div class="stat-label">Financés</div></div></div>
+                    <div class="stat-tile"><div class="stat-icon" style="background:rgba(14,165,233,0.1);color:var(--sky);">${ICONS.trending}</div><div><div class="stat-value">${myProjects.length-funded}</div><div class="stat-label">En cours</div></div></div>
+                </div>
+                ${myProjects.length===0?`
+                <div class="empty-state">
+                    <div class="empty-icon">${ICONS.briefcase}</div>
+                    <h3 class="title" style="margin-bottom:8px;">Aucun projet</h3>
+                    <p class="small muted" style="margin-bottom:20px;">Créez votre premier projet pour attirer des investisseurs</p>
+                    <button class="btn btn-primary" onclick="S.currentProject=null;go('create')">${svgIcon('plus')} Créer un projet</button>
+                </div>`:`
+                <div class="grid" style="gap:20px;">
+                    ${myProjects.map(p=>{
+                        const total=p.investments?.reduce((s,i)=>s+i.percentage,0)||0;
+                        return `<div class="card" style="padding:0;overflow:hidden;">
+                            <div style="display:flex;gap:0;flex-wrap:wrap;">
+                                ${p.image?`<div style="width:220px;height:160px;flex-shrink:0;"><img src="${p.image}" style="width:100%;height:100%;object-fit:cover;"></div>`:`<div style="width:220px;height:160px;background:linear-gradient(135deg,#1e1b2e,#4c1d95);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="color:rgba(255,255,255,0.2);width:48px;height:48px;">${ICONS.briefcase}</span></div>`}
+                                <div style="padding:20px;flex:1;min-width:200px;">
+                                    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;">
+                                        <span class="badge badge-purple">${p.category}</span>
+                                        <span class="badge badge-green">${p.status}</span>
+                                    </div>
+                                    <h3 class="project-title">${p.title}</h3>
+                                    <p class="small muted" style="margin-bottom:12px;">${p.description.substring(0,100)}…</p>
+                                    <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:12px;">
+                                        <span class="tiny muted" style="display:flex;align-items:center;gap:4px;">${svgIcon('pin',14)} ${p.city}</span>
+                                        <span class="tiny" style="font-weight:700;display:flex;align-items:center;gap:4px;">${svgIcon('dollar',14)} ${fcfa(p.budget)}</span>
+                                    </div>
+                                    ${total>0?`<div class="progress" style="margin-bottom:8px;"><div class="progress-bar" style="width:${total}%"></div></div><p class="tiny muted">${total}% financé</p>`:''}
+                                    <div style="display:flex;gap:8px;margin-top:12px;">
+                                        <button class="btn btn-sm" style="background:rgba(124,58,237,0.08);color:var(--accent);" onclick="S.currentProject=S.projects.find(x=>x.id===${p.id});go('create')">${svgIcon('edit',14)} Modifier</button>
+                                        <button class="btn btn-sm btn-danger" onclick="deleteProject(${p.id})">${svgIcon('trash',14)}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+                    }).join('')}
+                </div>`}
+                <div class="info-box purple" style="margin-top:32px;">${svgIcon('shield')}<div><strong>Confidentialité garantie</strong><p class="small muted">Vos projets sont accessibles uniquement aux investisseurs validés soumis au NDA.</p></div></div>
+            </div>
+        </div>
+    </div>`;
+}
+
+// ─── CREATE / EDIT PROJECT ───────────────────
+function viewCreate() {
+    const p=S.currentProject||{};
+    const isEdit=!!S.currentProject;
+    return `${renderNavbar()}
+    <div style="min-height:100vh;background:var(--surface);padding:100px 20px 60px;">
+        <div style="max-width:720px;margin:0 auto;" class="animate-in">
+            <div style="margin-bottom:28px;">
+                <button class="btn btn-ghost btn-sm" onclick="go('porteur')" style="margin-bottom:16px;">${svgIcon('arrow',16)} Tableau de bord</button>
+                <h1 class="headline">${isEdit?'Modifier le projet':'Nouveau projet'}</h1>
+            </div>
+            <div class="card" style="padding:32px;">
+                <form onsubmit="handleCreateProject(event)" style="display:flex;flex-direction:column;gap:20px;">
+                    <div class="form-group"><label class="form-label">Titre *</label><input name="title" required value="${p.title||''}" class="form-input" placeholder="Ex: Application mobile de livraison"></div>
+                    <div class="grid grid-2" style="gap:16px;">
+                        <div class="form-group"><label class="form-label">Catégorie *</label>
+                            <select name="category" required class="form-select">
+                                <option value="">Choisir…</option>
+                                ${['Technologies','Agriculture','Commerce','Services','Santé','Éducation','Énergie','Autre'].map(c=>`<option ${p.category===c?'selected':''} value="${c}">${c}</option>`).join('')}
+                            </select>
+                        </div>
+                        <div class="form-group"><label class="form-label">Ville *</label><input name="city" required value="${p.city||''}" class="form-input" placeholder="Ex: Dakar"></div>
+                    </div>
+                    <div class="form-group"><label class="form-label">Description *</label><textarea name="description" required class="form-textarea" placeholder="Décrivez votre projet…">${p.description||''}</textarea></div>
+                    <div class="form-group"><label class="form-label">Objectifs *</label><textarea name="objectives" required class="form-textarea" placeholder="Objectifs et impacts attendus…">${p.objectives||''}</textarea></div>
+                    <div class="form-group"><label class="form-label">Budget estimé (FCFA) *</label><input type="number" name="budget" required min="0" step="1000" value="${p.budget||''}" class="form-input" placeholder="Ex: 5000000"></div>
+                    <div class="form-group">
+                        <label class="form-label">Image du projet (optionnel)</label>
+                        <div class="file-zone">${svgIcon('upload',32)}<p style="margin:10px 0 4px;font-weight:600;font-size:0.9rem;">Cliquez pour charger</p><p class="tiny muted">JPG, PNG — Max 5 Mo</p><input type="file" name="image" accept="image/*"></div>
+                    </div>
+                    <div class="info-box purple">${svgIcon('shield')}<p class="small"><strong>Protection NDA :</strong> Votre projet ne sera visible qu'aux investisseurs vérifiés.</p></div>
+                    <div style="display:flex;gap:12px;">
+                        <button type="submit" class="btn btn-primary btn-lg flex-1">${svgIcon('check')} ${isEdit?'Enregistrer':'Créer le projet'}</button>
+                        <button type="button" onclick="go('porteur')" class="btn" style="background:#e5e7eb;color:#374151;">Annuler</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>`;
+}
+
+// ─── INVESTOR DASHBOARD ──────────────────────
+function viewInvestor() {
+    const canInvest=S.user?.documentsValidated===true;
+    return `${renderNavbar()}
+    <div class="dashboard">
+        <div class="dash-header">
+            <div class="container flex items-center justify-between flex-wrap gap-3">
+                <div>
+                    <h1 class="headline" style="font-size:1.75rem;">Opportunités</h1>
+                    <p class="small muted">Bonjour, ${S.user?.name} ${canInvest?'<span class="badge badge-green">✓ Vérifié</span>':'<span class="badge badge-yellow">⏳ En attente</span>'}</p>
+                </div>
+            </div>
+        </div>
+        <div class="dash-body">
+            <div class="container">
+                ${!canInvest?`<div class="info-box yellow" style="margin-bottom:24px;">${svgIcon('warn')}<div><strong>Documents en cours de validation</strong><br><span class="small">Vous pouvez consulter mais pas encore investir.</span></div></div>`:''}
+                ${S.projects.length===0?`
+                <div class="empty-state">
+                    <div class="empty-icon">${ICONS.briefcase}</div>
+                    <h3 class="title" style="margin-bottom:8px;">Aucun projet disponible</h3>
+                    <p class="small muted">Les projets apparaîtront ici dès leur publication.</p>
+                </div>`:`
+                <div class="grid grid-projects" style="gap:20px;">
+                    ${S.projects.map(p=>{
+                        const total=p.investments?.reduce((s,i)=>s+i.percentage,0)||0;
+                        const rem=100-total;
+                        return `<div class="project-card" onclick="S.currentProject=S.projects.find(x=>x.id===${p.id});go('project')">
+                            <div class="project-img">${p.image?`<img src="${p.image}" alt="${p.title}">`:`<div class="project-img-placeholder">${ICONS.briefcase}</div>`}</div>
+                            <div class="project-body">
+                                <div class="project-meta">
+                                    <span class="badge badge-purple">${p.category}</span>
+                                    ${rem>0?`<span class="badge badge-blue">${rem}% dispo</span>`:'<span class="badge badge-green">Financé</span>'}
+                                </div>
+                                <h3 class="project-title">${p.title}</h3>
+                                <p class="project-desc">${p.description}</p>
+                                ${total>0?`<div style="margin-top:12px;"><div class="progress"><div class="progress-bar" style="width:${total}%"></div></div><p class="tiny muted" style="margin-top:4px;">${total}% financé</p></div>`:''}
+                            </div>
+                            <div class="project-footer">
+                                <span class="tiny muted" style="display:flex;align-items:center;gap:4px;">${svgIcon('pin',14)} ${p.city}</span>
+                                <span class="small" style="font-weight:700;">${fcfa(p.budget)}</span>
+                            </div>
+                        </div>`;
+                    }).join('')}
+                </div>`}
+                <div class="info-box purple" style="margin-top:32px;">${svgIcon('lock')}<div><strong>Engagement NDA actif</strong><p class="small muted">Toutes les informations consultées sont confidentielles.</p></div></div>
+            </div>
+        </div>
+    </div>`;
+}
+
+// ─── PROJECT DETAIL ──────────────────────────
+function viewProject() {
+    const p=S.currentProject;
+    if(!p) { go('investor'); return ''; }
+    const canInvest=S.user?.documentsValidated===true;
+    const total=p.investments?.reduce((s,i)=>s+i.percentage,0)||0;
+    const rem=100-total;
+    return `${renderNavbar()}
+    <div class="dashboard">
+        <div class="container" style="max-width:860px;padding-top:32px;">
+            <button class="btn btn-ghost btn-sm" onclick="go('investor')" style="margin-bottom:24px;">${svgIcon('arrow',16)} Retour</button>
+            <div class="card animate-in" style="padding:0;overflow:hidden;">
+                ${p.image?`<div style="height:320px;"><img src="${p.image}" style="width:100%;height:100%;object-fit:cover;"></div>`:`<div style="height:200px;background:linear-gradient(135deg,#1e1b2e,#4c1d95);display:flex;align-items:center;justify-content:center;"><span style="color:rgba(255,255,255,0.2);width:72px;height:72px;">${ICONS.briefcase}</span></div>`}
+                <div style="padding:32px;">
+                    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">
+                        <span class="badge badge-purple">${p.category}</span>
+                        <span class="badge badge-green">${p.status}</span>
+                        ${rem>0?`<span class="badge badge-blue">${rem}% disponible</span>`:''}
+                    </div>
+                    <h1 class="headline" style="margin-bottom:20px;">${p.title}</h1>
+                    ${total>0?`<div style="margin-bottom:24px;"><div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span class="small muted">Progression</span><strong>${total}%</strong></div><div class="progress" style="height:10px;"><div class="progress-bar" style="width:${total}%"></div></div><p class="tiny muted" style="margin-top:6px;">${fcfa(p.budget*total/100)} levés sur ${fcfa(p.budget)}</p></div>`:''}
+                    <div class="grid grid-3" style="gap:16px;margin-bottom:28px;">
+                        <div class="stat-tile"><div class="stat-icon" style="background:rgba(124,58,237,0.1);color:var(--accent);">${ICONS.pin}</div><div><div class="stat-label">Ville</div><div style="font-weight:700;">${p.city}</div></div></div>
+                        <div class="stat-tile"><div class="stat-icon" style="background:rgba(14,165,233,0.1);color:var(--sky);">${ICONS.dollar}</div><div><div class="stat-label">Budget</div><div style="font-weight:700;">${fcfa(p.budget)}</div></div></div>
+                        <div class="stat-tile"><div class="stat-icon" style="background:rgba(16,185,129,0.1);color:var(--emerald);">${ICONS.calendar}</div><div><div class="stat-label">Créé le</div><div style="font-weight:700;">${p.date}</div></div></div>
+                    </div>
+                    <h3 class="title" style="margin-bottom:10px;">Description</h3>
+                    <p class="body muted" style="margin-bottom:24px;">${p.description}</p>
+                    <h3 class="title" style="margin-bottom:10px;">Objectifs</h3>
+                    <p class="body muted" style="margin-bottom:24px;">${p.objectives}</p>
+                    ${p.investments?.length>0?`<div class="info-box green" style="margin-bottom:20px;">${svgIcon('check')}<div><strong>${p.investments.length} investissement(s)</strong><br>${p.investments.map(i=>`<span class="tiny">${i.investorName} — ${i.percentage}% (${fcfa(i.amount)})</span>`).join('<br>')}</div></div>`:''}
+                    <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:24px;">
+                        ${!rem?`<div class="btn w-full" style="background:#e5e7eb;color:#6b7280;cursor:default;">${svgIcon('check')} Projet entièrement financé</div>`:`
+                        <button onclick="S.investData={pct:10,amount:${p.budget}*0.1};openModal('invest')" class="btn btn-primary btn-lg flex-1 ${!canInvest?'':''}">
+                            ${svgIcon('dollar')} ${canInvest?'Investir dans ce projet':'Validation en attente'}
+                        </button>`}
+                        <button onclick="openModal('contact')" class="btn btn-outline btn-lg" style="flex:1;">${svgIcon('mail')} Contacter</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    ${S.modal==='contact'?modalContact():''}
+    ${S.modal==='invest'?modalInvest():''}`;
+}
+
+// ─── ADMIN ───────────────────────────────────
+function viewAdmin() {
+    const pending=S.users.filter(u=>u.type==='investisseur'&&!u.documentsValidated&&!u.rejectionReason);
+    const approved=S.users.filter(u=>u.type==='investisseur'&&u.documentsValidated);
+    const rejected=S.users.filter(u=>u.type==='investisseur'&&u.rejectionReason);
+    const porteurs=S.users.filter(u=>u.type==='porteur');
+    const allUsers=S.users;
+
+    const tabContent = ()=>{
+        if(S.adminTab==='pending') return renderInvestorList(pending,'yellow','En attente',true);
+        if(S.adminTab==='approved') return renderInvestorList(approved,'green','Approuvés',false);
+        if(S.adminTab==='rejected') return renderInvestorList(rejected,'red','Rejetés',false);
+        if(S.adminTab==='porteurs') return renderPorteurList(porteurs);
+        if(S.adminTab==='db') return renderUserDB(allUsers);
+        return '';
+    };
+
+    return `
+    <nav class="admin-nav" style="position:fixed;top:0;left:0;right:0;z-index:100;">
+        <div class="container admin-nav-inner">
+            <div class="logo"><div class="logo-mark">${ICONS.settings}</div><span class="logo-name">Admin</span></div>
+            <div class="admin-tabs">
+                ${[['pending','En attente','yellow'],['approved','Validés','green'],['rejected','Rejetés','red'],['porteurs','Porteurs','blue'],['db','Base de données','purple']].map(([t,l,c])=>`
+                <button class="admin-tab ${S.adminTab===t?'active':''}" onclick="S.adminTab='${t}';render()">${l}${t==='pending'&&pending.length>0?` (${pending.length})`:''}</button>`).join('')}
+            </div>
+            <button class="btn btn-ghost btn-sm" onclick="logout()">${svgIcon('logout',16)}</button>
+        </div>
+    </nav>
+    <div style="padding-top:calc(72px + var(--safe-top));min-height:100vh;background:var(--surface);">
+        <div class="container" style="padding-top:28px;padding-bottom:60px;">
+            <div class="grid grid-4" style="gap:16px;margin-bottom:32px;">
+                ${[
+                    [pending.length,'En attente','yellow',ICONS.warn],
+                    [approved.length,'Validés','green',ICONS.check],
+                    [rejected.length,'Rejetés','red',ICONS.xc],
+                    [porteurs.length,'Porteurs','blue',ICONS.briefcase]
+                ].map(([v,l,c,icon])=>`
+                <div class="stat-tile"><div class="stat-icon" style="background:var(--${c==='blue'?'sky':c==='yellow'?'gold':c==='red'?'rose':'emerald'},0.1)" style="background:rgba(0,0,0,0.05);color:${c==='yellow'?'var(--gold)':c==='green'?'var(--emerald)':c==='red'?'var(--rose)':'var(--sky)'};">${icon}</div><div><div class="stat-value">${v}</div><div class="stat-label">${l}</div></div></div>`).join('')}
+            </div>
+            ${tabContent()}
+        </div>
+    </div>
+    ${S.modal==='docView'?modalDocView():''}`;
+}
+
+function renderInvestorList(list,color,title,showActions) {
+    if(!list.length) return `<div class="empty-state"><div class="empty-icon">${ICONS.check}</div><h3 class="title">Aucun investisseur ${title.toLowerCase()}</h3></div>`;
+    return `<div class="table-container">
+        <div class="table-header"><h3 class="title">${title} (${list.length})</h3></div>
+        <div style="overflow-x:auto;">
+        <table class="table">
+            <thead><tr>
+                <th>Investisseur</th>
+                <th>Email</th>
+                <th>Ville</th>
+                <th>Date</th>
+                <th>Document</th>
+                <th>Statut</th>
+                ${showActions?'<th>Actions</th>':''}
+            </tr></thead>
+            <tbody>${list.map(u=>`<tr>
+                <td><div style="display:flex;align-items:center;gap:10px;"><div class="avatar">${initials(u.name)}</div><strong>${u.name}</strong></div></td>
+                <td>${u.email}</td>
+                <td>${u.city}</td>
+                <td>${fdate(u.createdAt)}</td>
+                <td><span class="badge badge-purple" style="cursor:pointer;" onclick="S.modal='docView';S.currentProject=null;window.__docUser=${u.id};render()">${svgIcon('file',14)} ${u.financialDocument||'—'}</span></td>
+                <td>${u.documentsValidated?'<span class="badge badge-green">✓ Validé</span>':u.rejectionReason?`<span class="badge badge-red">✗ Rejeté</span>`:'<span class="badge badge-yellow">⏳ Attente</span>'}</td>
+                ${showActions?`<td><div style="display:flex;gap:6px;"><button class="btn btn-success btn-sm" onclick="approveInvestor(${u.id})">${svgIcon('check',14)}</button><button class="btn btn-danger btn-sm" onclick="rejectInvestor(${u.id})">${svgIcon('x',14)}</button><button class="btn btn-sm" style="background:rgba(124,58,237,0.1);color:var(--accent);" onclick="window.__docUser=${u.id};openModal('docView')">${svgIcon('eye',14)}</button></div></td>`:''}
+            </tr>`).join('')}</tbody>
+        </table></div>
+    </div>`;
+}
+
+function renderPorteurList(list) {
+    if(!list.length) return `<div class="empty-state"><div class="empty-icon">${ICONS.briefcase}</div><h3 class="title">Aucun porteur de projet</h3></div>`;
+    return `<div class="table-container">
+        <div class="table-header"><h3 class="title">Porteurs de projets (${list.length})</h3></div>
+        <div style="overflow-x:auto;">
+        <table class="table">
+            <thead><tr><th>Porteur</th><th>Email</th><th>Ville</th><th>Inscription</th><th>Projets</th></tr></thead>
+            <tbody>${list.map(u=>{
+                const count=S.projects.filter(p=>p.ownerId===u.id).length;
+                return `<tr>
+                    <td><div style="display:flex;align-items:center;gap:10px;"><div class="avatar" style="background:linear-gradient(135deg,var(--sky),#38bdf8);">${initials(u.name)}</div><strong>${u.name}</strong></div></td>
+                    <td>${u.email}</td><td>${u.city}</td><td>${fdate(u.createdAt)}</td>
+                    <td><span class="badge badge-purple">${count} projet${count>1?'s':''}</span></td>
+                </tr>`;
+            }).join('')}</tbody>
+        </table></div>
+    </div>`;
+}
+
+function renderUserDB(list) {
+    const filtered = list.filter(u=>{
+        if(!S.filterSearch) return true;
+        const q=S.filterSearch.toLowerCase();
+        return u.name?.toLowerCase().includes(q)||u.email?.toLowerCase().includes(q)||u.city?.toLowerCase().includes(q);
+    });
+    return `
+    <div class="table-container">
+        <div class="table-header">
+            <div style="display:flex;align-items:center;gap:10px;">${svgIcon('db',20)}<h3 class="title">Base de données utilisateurs (${filtered.length}/${list.length})</h3></div>
+            <div class="table-search">${svgIcon('search',16)}<input placeholder="Rechercher…" value="${S.filterSearch}" oninput="S.filterSearch=this.value;render()"></div>
+        </div>
+        ${filtered.length===0?`<div class="empty-state"><div class="empty-icon">${ICONS.search}</div><h3 class="title">Aucun résultat</h3></div>`:`
+        <div style="overflow-x:auto;">
+        <table class="table">
+            <thead><tr>
+                <th>#</th><th>Utilisateur</th><th>Type</th><th>Email</th><th>Ville</th>
+                <th>Inscription</th><th>Statut</th><th>Détails</th>
+            </tr></thead>
+            <tbody>${filtered.map((u,i)=>`<tr>
+                <td class="muted tiny">${i+1}</td>
+                <td><div style="display:flex;align-items:center;gap:10px;"><div class="avatar" style="background:${u.type==='porteur'?'linear-gradient(135deg,var(--sky),#38bdf8)':'linear-gradient(135deg,var(--accent),var(--accent-2))'};">${initials(u.name)}</div><div><strong>${u.name}</strong><div class="tiny muted">ID: ${u.id}</div></div></div></td>
+                <td><span class="badge ${u.type==='porteur'?'badge-blue':'badge-purple'}">${u.type==='porteur'?'Porteur':'Investisseur'}</span></td>
+                <td class="small">${u.email}</td>
+                <td class="small">${u.city}</td>
+                <td class="small">${fdate(u.createdAt)}</td>
+                <td>${u.type==='investisseur'?(u.documentsValidated?'<span class="badge badge-green">✓ Validé</span>':u.rejectionReason?'<span class="badge badge-red">✗ Rejeté</span>':'<span class="badge badge-yellow">⏳ Attente</span>'):'<span class="badge badge-blue">Actif</span>'}</td>
+                <td>${u.type==='investisseur'?`<button class="btn btn-sm" style="background:rgba(124,58,237,0.08);color:var(--accent);" onclick="window.__docUser=${u.id};openModal('docView')">${svgIcon('eye',14)} Docs</button>`:`<span class="tiny muted">${S.projects.filter(p=>p.ownerId===u.id).length} projet(s)</span>`}</td>
+            </tr>`).join('')}</tbody>
+        </table></div>`}
+        <div style="padding:16px 24px;border-top:1px solid var(--border);background:var(--surface);">
+            <p class="tiny muted">Données stockées localement (localStorage) · ${list.length} utilisateur(s) enregistré(s)</p>
+        </div>
+    </div>`;
+}
+
+// ─── MODALS ──────────────────────────────────
+function modalLogin() {
+    return `<div class="modal-backdrop"><div class="modal">
+        <div class="flex items-center justify-between" style="margin-bottom:24px;">
+            <h3 class="title">Connexion</h3>
+            <button class="btn btn-icon" style="background:#f3f4f6;color:#374151;" onclick="closeModal()">${svgIcon('x')}</button>
+        </div>
+        <form onsubmit="handleLogin(event)" style="display:flex;flex-direction:column;gap:16px;">
+            <div class="form-group"><label class="form-label">Email ou identifiant</label><input type="text" name="email" required class="form-input" placeholder="vous@email.com"></div>
+            <div class="form-group"><label class="form-label">Mot de passe</label><input type="password" name="password" required class="form-input" placeholder="••••••••"></div>
+            <div style="text-align:right;"><button type="button" onclick="openModal('forgot')" style="color:var(--accent);font-weight:600;background:none;border:none;cursor:pointer;font-size:0.875rem;">Mot de passe oublié ?</button></div>
+            <button type="submit" class="btn btn-primary btn-lg">${svgIcon('lock')} Se connecter</button>
+            <p class="small text-center muted">Pas de compte ? <button type="button" onclick="closeModal();go('choose')" style="color:var(--accent);font-weight:600;background:none;border:none;cursor:pointer;">Créer un compte</button></p>
+        </form>
+    </div></div>`;
+}
+
+function modalForgot() {
+    return `<div class="modal-backdrop"><div class="modal">
+        <div class="flex items-center justify-between" style="margin-bottom:24px;">
+            <h3 class="title">Récupération</h3>
+            <button class="btn btn-icon" style="background:#f3f4f6;color:#374151;" onclick="closeModal()">${svgIcon('x')}</button>
+        </div>
+        <p class="small muted" style="margin-bottom:20px;">Entrez votre email pour recevoir un lien de réinitialisation.</p>
+        <form onsubmit="handleForgot(event)" style="display:flex;flex-direction:column;gap:16px;">
+            <div class="form-group"><label class="form-label">Email</label><input type="email" name="email" required class="form-input" placeholder="vous@email.com"></div>
+            <button type="submit" class="btn btn-primary btn-lg">${svgIcon('send')} Envoyer</button>
+            <button type="button" onclick="openModal('login')" class="btn" style="background:#e5e7eb;color:#374151;">${svgIcon('arrow',16)} Retour</button>
+        </form>
+    </div></div>`;
+}
+
+function modalContact() {
+    let msg='';
+    return `<div class="modal-backdrop"><div class="modal">
+        <div class="flex items-center justify-between" style="margin-bottom:24px;">
+            <h3 class="title">Contacter le porteur</h3>
+            <button class="btn btn-icon" style="background:#f3f4f6;color:#374151;" onclick="closeModal()">${svgIcon('x')}</button>
+        </div>
+        <p class="small muted" style="margin-bottom:16px;">Présentez-vous et expliquez votre intérêt pour ce projet.</p>
+        <textarea id="contact-msg" rows="6" class="form-textarea" placeholder="Bonjour, je suis…&#10;&#10;Cordialement"></textarea>
+        <div style="display:flex;flex-direction:column;gap:10px;margin-top:16px;">
+            <button onclick="const m=document.getElementById('contact-msg').value;if(!m.trim()){toast('Écrivez un message','error');return;}toast('Message envoyé !','success');closeModal();" class="btn btn-primary btn-lg">${svgIcon('send')} Envoyer</button>
+            <button onclick="closeModal()" class="btn" style="background:#e5e7eb;color:#374151;">Annuler</button>
+        </div>
+    </div></div>`;
+}
+
+function modalInvest() {
+    const p=S.currentProject;
+    const total=p.investments?.reduce((s,i)=>s+i.percentage,0)||0;
+    const rem=100-total;
+    return `<div class="modal-backdrop"><div class="modal modal-lg">
+        <div class="flex items-center justify-between" style="margin-bottom:24px;">
+            <h3 class="title">Investir dans le projet</h3>
+            <button class="btn btn-icon" style="background:#f3f4f6;color:#374151;" onclick="closeModal()">${svgIcon('x')}</button>
+        </div>
+        <div class="info-box purple" style="margin-bottom:20px;">${svgIcon('info')}<div><strong>${p.title}</strong><br><span class="small muted">Budget : ${fcfa(p.budget)} · Disponible : ${rem}%</span></div></div>
+        <form onsubmit="handleInvest(event)" style="display:flex;flex-direction:column;gap:18px;">
+            <div class="form-group">
+                <label class="form-label">Tranche d'investissement (1% – ${rem}%)</label>
+                <div style="display:flex;align-items:center;gap:16px;">
+                    <input type="range" name="percentage" min="1" max="${rem}" value="10" oninput="updateInvPct(event)" style="flex:1;height:8px;accent-color:var(--accent);">
+                    <div style="background:rgba(124,58,237,0.08);color:var(--accent);padding:8px 16px;border-radius:10px;font-weight:700;min-width:70px;text-align:center;"><span id="inv-pct">10</span>%</div>
+                </div>
+            </div>
+            <div class="stat-tile"><div class="stat-icon" style="background:rgba(14,165,233,0.1);color:var(--sky);">${ICONS.dollar}</div><div><div class="stat-label">Montant</div><div class="stat-value" id="inv-amount" style="font-size:1.5rem;">${fcfa(p.budget*0.1)}</div></div></div>
+            <div class="info-box yellow">${svgIcon('warn')}<div class="small"><strong>Conditions :</strong><br>Paiement obligatoire · Contrat automatique · Confirmation par email</div></div>
+            <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.2);border-radius:10px;padding:14px;">
+                <input type="checkbox" name="payConfirm" required style="width:18px;height:18px;margin-top:2px;accent-color:var(--emerald);flex-shrink:0;">
+                <span class="small" style="font-weight:600;">Je confirme que je procéderai au paiement du montant indiqué pour finaliser mon investissement *</span>
+            </label>
+            <div style="display:flex;gap:10px;">
+                <button type="submit" class="btn btn-success btn-lg flex-1">${svgIcon('check')} Confirmer l'investissement</button>
+                <button type="button" onclick="closeModal()" class="btn" style="background:#e5e7eb;color:#374151;">Annuler</button>
+            </div>
+        </form>
+    </div></div>`;
+}
+
+function modalDocView() {
+    const u=S.users.find(x=>x.id===window.__docUser);
+    if(!u) return '';
+    return `<div class="modal-backdrop"><div class="modal modal-lg">
+        <div class="flex items-center justify-between" style="margin-bottom:24px;">
+            <h3 class="title">Documents — ${u.name}</h3>
+            <button class="btn btn-icon" style="background:#f3f4f6;color:#374151;" onclick="closeModal()">${svgIcon('x')}</button>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px;">
+            <div class="info-box purple">${svgIcon('users')}<div><strong>${u.name}</strong><br><span class="small muted">${u.email} · ${u.city}</span><br><span class="tiny muted">Inscrit le ${fdate(u.createdAt)}</span></div></div>
+            <div style="background:var(--surface);border-radius:var(--radius);padding:20px;border:1px solid var(--border);">
+                <h4 style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">${svgIcon('file',18)} Document financier</h4>
+                <div style="background:#fff;border-radius:10px;padding:14px;border:1px solid var(--border);display:flex;align-items:center;gap:12px;">
+                    <div class="stat-icon" style="background:rgba(124,58,237,0.1);color:var(--accent);">${ICONS.file}</div>
+                    <div><p style="font-weight:600;">${u.financialDocument||'Non fourni'}</p><p class="tiny muted">Bulletin de salaire ou CA</p></div>
+                </div>
+            </div>
+            <div class="info-box ${u.ndaAccepted?'green':'red'}">${svgIcon(u.ndaAccepted?'shield':'warn')}<div><strong>NDA : ${u.ndaAccepted?'Accepté':'Non accepté'}</strong>${u.ndaDate?`<br><span class="tiny muted">Le ${fdate(u.ndaDate)}</span>`:''}</div></div>
+            <div style="background:var(--surface);border-radius:var(--radius);padding:16px 20px;border:1px solid var(--border);">
+                <strong>Statut : </strong>
+                ${u.documentsValidated?'<span class="badge badge-green">✓ Approuvé</span>':u.rejectionReason?`<span class="badge badge-red">✗ Rejeté — ${u.rejectionReason}</span>`:'<span class="badge badge-yellow">⏳ En attente</span>'}
+            </div>
+            ${!u.documentsValidated&&!u.rejectionReason?`
+            <div style="display:flex;gap:10px;">
+                <button onclick="approveInvestor(${u.id});closeModal()" class="btn btn-success flex-1">${svgIcon('check')} Approuver</button>
+                <button onclick="rejectInvestor(${u.id});closeModal();" class="btn btn-danger flex-1">${svgIcon('x')} Rejeter</button>
+            </div>`:''}
+            <button onclick="closeModal()" class="btn" style="background:#e5e7eb;color:#374151;">Fermer</button>
+        </div>
+    </div></div>`;
+}
+
+// ╔══════════════════════════════════════════╗
+// ║              MAIN RENDER                 ║
+// ╚══════════════════════════════════════════╝
+function render() {
+    const root=document.getElementById('root');
+    const views={landing:viewLanding,choose:viewChoose,signup:viewSignup,porteur:viewPorteur,create:viewCreate,investor:viewInvestor,project:viewProject,admin:viewAdmin};
+    root.innerHTML=(views[S.view]||viewLanding)();
+}
+
+// ╔══════════════════════════════════════════╗
+// ║                BOOT + PWA                ║
+// ╚══════════════════════════════════════════╝
+load();
+render();
+
+if('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(()=>{});
+}
+</script>
+</body>
+</html>

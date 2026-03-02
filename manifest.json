@@ -1,0 +1,41 @@
+{
+  "name": "Prodave — Inclusion Entrepreneuriale",
+  "short_name": "Prodave",
+  "description": "Plateforme sécurisée d'inclusion entrepreneuriale au Sénégal",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0f",
+  "theme_color": "#7c3aed",
+  "orientation": "any",
+  "lang": "fr",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' rx='40' fill='%237c3aed'/><path d='M40 96l40-50 72 100' stroke='white' stroke-width='14' fill='none' stroke-linecap='round' stroke-linejoin='round'/><path d='M70 116l26-26 26 26' stroke='white' stroke-width='14' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='100' fill='%237c3aed'/><path d='M100 256l100-130 200 260' stroke='white' stroke-width='36' fill='none' stroke-linecap='round' stroke-linejoin='round'/><path d='M180 296l76-76 76 76' stroke='white' stroke-width='36' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "finance", "productivity"],
+  "screenshots": [],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "shortcuts": [
+    {
+      "name": "Mes projets",
+      "url": "/",
+      "description": "Accéder à mes projets"
+    },
+    {
+      "name": "Connexion",
+      "url": "/",
+      "description": "Se connecter"
+    }
+  ]
+}
