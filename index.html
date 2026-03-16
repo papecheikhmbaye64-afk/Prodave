@@ -370,6 +370,12 @@
         if (user) {
           AppState.currentUser = user; AppState.userType = user.type;
           saveToStorage(); closeLoginModal();
+          // ★ Notification immédiate si l'investisseur a été rejeté
+          if (user.type === "investisseur" && user.rejectionReason) {
+            setTimeout(() => {
+              alert(`❌ Votre dossier a été refusé.\n\n📋 Motif : ${user.rejectionReason}\n\nVeuillez contacter support@prodave.sn pour plus d'informations.`);
+            }, 300);
+          }
           navigateTo(user.type === "porteur" ? "porteur-dashboard" : "investisseur-dashboard");
         } else { alert("❌ Identifiant/email ou mot de passe incorrect"); }
       }
@@ -913,7 +919,84 @@
       function renderInvestisseurDashboard() {
         if (!AppState.currentUser) { navigateTo("landing"); return ""; }
         const canInvest = AppState.currentUser.documentsValidated === true;
+        const isRejected = !!(AppState.currentUser.rejectionReason);
+
         if (!canInvest) {
+          // ── CAS 1 : DOSSIER REJETÉ ──────────────────────────────────────────
+          if (isRejected) {
+            return `
+              <div class="min-h-screen bg-white">
+                <nav class="navbar"><div class="navbar-content">
+                  <div class="flex items-center gap-3"><div class="logo-container gradient-bg"><div class="icon text-white">${Icons.trending}</div></div><span class="text-2xl font-bold gradient-text font-display">Prodave</span></div>
+                  <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-2">
+                      <div class="px-4 py-2 bg-red-50 rounded-xl"><span class="text-red-700 font-semibold">${AppState.currentUser.name}</span></div>
+                      <span class="badge" style="background:#fef2f2;border:1px solid #fecaca;color:#dc2626;">✗ Rejeté</span>
+                    </div>
+                    <button onclick="logout()" class="btn" style="background:#fee2e2;color:#dc2626;"><div class="icon">${Icons.logOut}</div></button>
+                  </div>
+                </div></nav>
+                <div style="padding-top:6rem;" class="min-h-screen flex items-center justify-center px-4">
+                  <div class="text-center animate-fade-in" style="max-width:560px;">
+
+                    <!-- Icône rejet -->
+                    <div style="width:7rem;height:7rem;background:linear-gradient(135deg,#fef2f2,#fee2e2);border:3px solid #fca5a5;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 2rem;">
+                      <div style="width:3.5rem;height:3.5rem;color:#dc2626;">${Icons.xCircle}</div>
+                    </div>
+
+                    <h1 class="text-4xl font-black mb-3 font-display" style="color:#1a202c;">Dossier refusé</h1>
+                    <p class="text-lg text-gray-600 mb-6 leading-relaxed">Bonjour <strong>${AppState.currentUser.name}</strong>, votre demande d'accès à la plateforme a été examinée et n'a pas été acceptée.</p>
+
+                    <!-- Bloc raison du rejet — bien visible -->
+                    <div style="background:#fef2f2;border:2px solid #fca5a5;border-radius:1.25rem;padding:1.5rem;text-align:left;margin-bottom:1.5rem;">
+                      <div class="flex items-start gap-3">
+                        <div style="width:2.5rem;height:2.5rem;background:#fee2e2;border-radius:.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                          <div style="width:1.25rem;height:1.25rem;color:#dc2626;">${Icons.alertTriangle}</div>
+                        </div>
+                        <div>
+                          <p class="font-bold text-red-800 mb-1" style="font-size:0.9rem;">Motif du refus :</p>
+                          <p class="text-red-700 leading-relaxed" style="font-size:0.95rem;">${AppState.currentUser.rejectionReason}</p>
+                          ${AppState.currentUser.rejectionDate ? `<p class="text-red-400 mt-2" style="font-size:0.75rem;">Refusé le ${new Date(AppState.currentUser.rejectionDate).toLocaleDateString('fr-FR', {dateStyle:'full'})}</p>` : ""}
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Étapes du dossier -->
+                    <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:1rem;padding:1.5rem;text-align:left;margin-bottom:1.5rem;">
+                      <p class="font-bold text-gray-700 mb-4" style="font-size:0.9rem;text-transform:uppercase;letter-spacing:0.05em;">Historique de votre dossier</p>
+                      <div class="space-y-3">
+                        <div class="flex items-center gap-3">
+                          <div style="width:2rem;height:2rem;background:#d1fae5;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><div style="width:1rem;height:1rem;color:#16a34a;">${Icons.check}</div></div>
+                          <div><p class="font-semibold text-gray-800" style="font-size:0.875rem;">Inscription complétée</p><p class="text-gray-500" style="font-size:0.75rem;">Vos informations ont bien été reçues</p></div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                          <div style="width:2rem;height:2rem;background:#d1fae5;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><div style="width:1rem;height:1rem;color:#16a34a;">${Icons.check}</div></div>
+                          <div><p class="font-semibold text-gray-800" style="font-size:0.875rem;">Documents soumis</p><p class="text-gray-500" style="font-size:0.75rem;">${AppState.currentUser.financialDocument || "Document financier reçu"}</p></div>
+                        </div>
+                        <div class="flex items-center gap-3">
+                          <div style="width:2rem;height:2rem;background:#fee2e2;border:2px solid #fca5a5;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><div style="width:1rem;height:1rem;color:#dc2626;">${Icons.x}</div></div>
+                          <div><p class="font-semibold text-red-700" style="font-size:0.875rem;">Dossier refusé</p><p class="text-red-400" style="font-size:0.75rem;">Voir le motif ci-dessus</p></div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Que faire ? -->
+                    <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:1rem;padding:1.25rem;text-align:left;margin-bottom:1.5rem;">
+                      <p class="font-bold text-blue-800 mb-2" style="font-size:0.875rem;">Que faire maintenant ?</p>
+                      <ul class="text-blue-700 space-y-1" style="font-size:0.82rem;list-style:disc;padding-left:1.25rem;">
+                        <li>Vérifiez que les documents soumis correspondent aux critères requis</li>
+                        <li>Créez un nouveau compte avec les bons documents si nécessaire</li>
+                        <li>Contactez le support pour plus d'informations</li>
+                      </ul>
+                    </div>
+
+                    <p class="text-sm text-gray-400">Besoin d'aide ? <span style="color:#667eea;font-weight:600;">support@prodave.sn</span></p>
+                  </div>
+                </div>
+              </div>`;
+          }
+
+          // ── CAS 2 : EN ATTENTE DE VALIDATION ────────────────────────────────
           return `
             <div class="min-h-screen bg-white">
               <nav class="navbar"><div class="navbar-content">
